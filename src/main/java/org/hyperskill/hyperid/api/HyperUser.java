@@ -45,12 +45,22 @@ public class HyperUser {
         this.name = name;
     }
 
+    public HyperUser withName(String name) {
+        this.name = name;
+        return this;
+    }
+
     public String getSurname() {
         return surname;
     }
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public HyperUser withSurname(String surname) {
+        this.surname = surname;
+        return this;
     }
 
     public String getPassword() {

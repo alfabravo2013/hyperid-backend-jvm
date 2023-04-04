@@ -61,12 +61,40 @@ public class HyperUserController {
     @PostMapping(path = "/logout")
     @ResponseStatus(HttpStatus.OK)
     public void logout(HttpServletRequest request) {
+        var token = getToken(request);
+        service.logoutUser(token);
+    }
+
+    @GetMapping(
+            path = "/account",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto getUserInfo(HttpServletRequest request) {
+        var token = getToken(request);
+        return service.getAccountDetails(token);
+    }
+
+    @PutMapping(
+            path = "/account",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto update(
+            HttpServletRequest request,
+            @Valid @RequestBody UserUpdateRequest updateRequest
+    ) {
+        var token = getToken(request);
+        return service.updateAndGetUser(updateRequest, token);
+    }
+
+    private static String getToken(HttpServletRequest request) {
         var token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token == null) {
             throw new MissingAuthorizationHeader();
         }
-
-        service.logoutUser(token);
+        return token;
     }
 
     @ControllerAdvice
