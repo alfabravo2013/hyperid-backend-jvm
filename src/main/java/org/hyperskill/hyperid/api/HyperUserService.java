@@ -44,10 +44,6 @@ public class HyperUserService {
         return AuthenticatedUserWrapper.from(user);
     }
 
-    public void logoutUser(String token) {
-        repository.invalidateToken(token);
-    }
-
     private static void verifyCredentials(UserCredentialsDto request, HyperUser user) {
         if (!Objects.equals(user.getPassword(), request.password())) {
             throw new BadCredentialsException();

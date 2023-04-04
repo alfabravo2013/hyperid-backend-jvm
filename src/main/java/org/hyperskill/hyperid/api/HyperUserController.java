@@ -1,7 +1,6 @@
 package org.hyperskill.hyperid.api;
 
 import org.hyperskill.hyperid.exception.ApiException;
-import org.hyperskill.hyperid.exception.MissingAuthorizationHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -56,17 +54,6 @@ public class HyperUserController {
                 .status(HttpStatus.OK)
                 .headers(headers)
                 .body(body);
-    }
-
-    @PostMapping(path = "/logout")
-    @ResponseStatus(HttpStatus.OK)
-    public void logout(HttpServletRequest request) {
-        var token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (token == null) {
-            throw new MissingAuthorizationHeader();
-        }
-
-        service.logoutUser(token);
     }
 
     @ControllerAdvice
